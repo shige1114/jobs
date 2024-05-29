@@ -1,0 +1,13 @@
+jwt:{
+    "iss":"jwtの発行サービス",
+    "sub":"識別子",
+    "aud":"サービス識別子",
+    "exp":"jwtの有効期限",
+    "jti":"jwtの再利用を防ぐための一意識別子"
+}
+
+ALGORITHM (
+base64(ヘッダー(アルゴリズム、type))
+base64(payload)
+base64( hedder+payload+syomei 署名)
+)
