@@ -6,7 +6,7 @@ services:
       - type: bind
         source: ../../
         target: /jobs/
-    working_dir: /app/02_company
+    working_dir: /jobs/02_company
     tty: true
     environment:
       POSTGRES_USER: postgres
