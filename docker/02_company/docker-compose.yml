@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - type: bind
-        source: .
+        source: ../
         target: /app
     tty: true
     environment:
@@ -13,7 +13,7 @@ services:
       POSTGRES_DB: flask_ddb
       POSTGRES_HOST: "db:5432"
     ports:
-      - 1000:1000
+      - 1010:1010
     networks:
       - jobs-net
       - api-net
@@ -31,7 +31,7 @@ services:
     networks:
       - api-net
     ports:
-      - "1001:1001"
+      - "1011:1011"
 
 volumes:
   pgdata:
