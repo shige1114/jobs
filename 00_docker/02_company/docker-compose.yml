@@ -5,7 +5,7 @@ services:
     volumes:
       - type: bind
         source: ../../
-        target: /app/
+        target: /jobs/
     working_dir: /app/02_company
     tty: true
     environment:
