@@ -4,8 +4,11 @@ services:
     build: .
     volumes:
       - type: bind
-        source: ../
-        target: /app
+        source: ../../02_company/
+        target: /app/02_company/
+      - type: bind
+        source: ../../.git
+        target: /app/02_company/.git
     tty: true
     environment:
       POSTGRES_USER: postgres
