@@ -4,8 +4,9 @@ services:
     build: .
     volumes:
       - type: bind
-        source: ../
-        target: /app
+        source: ../../
+        target: /app/
+    working_dir: 01_authentication
     tty: true
     environment:
       POSTGRES_USER: postgres
