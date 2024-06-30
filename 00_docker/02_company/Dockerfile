@@ -1,7 +1,11 @@
-FROM golang:1.22-alpine
-RUN apk update && \
-    apk add git openssh-client socat && \
-    apk add --upgrade grep
-WORKDIR /app/02_company
+FROM python:3-alpine
+
+RUN apk add --no-cache git
+RUN pip install --upgrade pip
+COPY . /jobs
+WORKDIR /jobs
+RUN pip install -r  requirements.txt
+EXPOSE 5000
+
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
