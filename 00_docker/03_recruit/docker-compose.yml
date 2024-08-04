@@ -1,0 +1,45 @@
+
+services:
+  api:
+    build: .
+    volumes:
+      - type: bind
+        source: ../../
+        target: /jobs
+    working_dir: /jobs/03_recruit
+    tty: true
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: flask_ddb
+      POSTGRES_HOST: "db"
+      POSTGRES_PORT: "5432"
+    ports:
+      - 1020:1020
+    networks:
+      - jobs-net
+      - api-net
+    depends_on:
+     - db
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: flask_ddb
+    volumes:
+     - pgdata:/var/lib/postgresql/data
+    networks:
+      - api-net
+    ports:
+      - "1021:1021"
+
+volumes:
+  pgdata:
+
+
+networks:
+  jobs-net:
+    external: true
+  api-net:

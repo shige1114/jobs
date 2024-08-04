@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 class Company(Base):
     __tablename__ = 'companies'
     id = Column(String,primary_key=True)
-    name = Column(String,nullable=False)
+    name = Column(String,nullable=False,unique=True)
     kana = Column(String,nullable=False)
     url = Column(String,nullable=True)
     active = Column(Boolean,default=True)

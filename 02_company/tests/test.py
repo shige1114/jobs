@@ -4,8 +4,6 @@ from repository.company import CompanyRepository
 from pathlib import Path
 
 class TestCompany(unittest.TestCase):
-    
-
     def test_insert(self):
         print("__________________________")
         print("_________insert_________")
