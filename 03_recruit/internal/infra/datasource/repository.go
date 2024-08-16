@@ -1,8 +1,9 @@
 package datasource
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
-	"github.com/shige1114/03_recruit/internal/domain/models"
 	"github.com/shige1114/03_recruit/internal/domain/repository"
 	"github.com/shige1114/03_recruit/internal/domain/value"
 	"gorm.io/gorm"
@@ -18,19 +19,21 @@ func NewRepository(db *gorm.DB) repository.RepositoryInterface {
 
 func (repo *Repository) Insert(recruit *value.Recruit) error {
 	dbRecurit := ToDB(recruit)
-
+	if repo.db == nil {
+		return errors.New("repository is not initialized")
+	}
 	if err := repo.db.Create(dbRecurit).Error; err != nil {
 		return err
 	}
 	return nil
 }
-func (repo *Repository) GetByUserId(id uuid.UUID) (*[]*value.Recruit, error) {
-	var dbRecruits []models.Recruit
+func (repo *Repository) GetByUserId(id uuid.UUID) (*[]value.Recruit, error) {
+	var dbRecruits []Recruit
 
-	if err := repo.db.Find(&dbRecruits, id).Error; err != nil {
+	if err := repo.db.Where("user_id = ?", id).Find(&dbRecruits).Error; err != nil {
 		return nil, err
 	}
-	recruits := make([]*value.Recruit, len(dbRecruits))
+	recruits := make([]value.Recruit, len(dbRecruits))
 	for i, dbRecruit := range dbRecruits {
 		recruits[i] = FromDB(&dbRecruit)
 	}
@@ -42,5 +45,5 @@ func (repo *Repository) Delete(id uuid.UUID) error {
 }
 func (repo *Repository) Put(recruit *value.Recruit) error {
 	dbRecruit := ToDB(recruit)
-	return repo.db.Model(&models.Recruit{}).Where("id = ?", dbRecruit.ID).Updates(dbRecruit).Error
+	return repo.db.Model(&Recruit{}).Where("id = ?", dbRecruit.ID).Updates(dbRecruit).Error
 }

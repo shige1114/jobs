@@ -1,12 +1,11 @@
 package datasource
 
 import (
-	"github.com/shige1114/03_recruit/internal/domain/models"
 	"github.com/shige1114/03_recruit/internal/domain/value"
 )
 
-func ToDB(rec *value.Recruit) *models.Recruit {
-	return &models.Recruit{
+func ToDB(rec *value.Recruit) *Recruit {
+	return &Recruit{
 		UserID:       rec.UserID,
 		CompanyID:    rec.CompanyID,
 		ID:           rec.ID,
@@ -18,8 +17,8 @@ func ToDB(rec *value.Recruit) *models.Recruit {
 	}
 }
 
-func FromDB(rec *models.Recruit) *value.Recruit {
-	return &value.Recruit{
+func FromDB(rec *Recruit) value.Recruit {
+	return value.Recruit{
 		UserID:       rec.UserID,
 		CompanyID:    rec.CompanyID,
 		ID:           rec.ID,

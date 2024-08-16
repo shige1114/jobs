@@ -4,7 +4,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Recruit struct {
+type CreateCommand struct {
 	CompanyID    uuid.UUID
 	UserID       uuid.UUID
 	SelfPR       string

@@ -18,51 +18,80 @@ type Recruit struct {
 	CreatedAt    time.Time
 }
 
-func New(id uuid.UUID, companyID uuid.UUID, userID uuid.UUID, selfPR string, goodPoint string, concernPoint string) *Recruit {
-	pr := SelfPR{Sentence: &selfPR}
-	gp := GoodPoint{Sentence: &goodPoint}
-	cp := ConcernPoint{Sentence: &concernPoint}
-
-	if pr.validate() && gp.validate() && cp.validate() {
-		return &Recruit{
-			ID:           id,
-			CompanyID:    companyID,
-			UserID:       userID,
-			SelfPR:       pr,
-			GoodPoint:    gp,
-			ConcernPoint: cp,
-			UpdatedAt:    time.Now(),
-			CreatedAt:    time.Now(),
-		}
+func New(companyID uuid.UUID, userID uuid.UUID, selfPR string, goodPoint string, concernPoint string) (*Recruit, error) {
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return nil, err
 	}
-	return nil
+	pr, err := checkSelfPr(&selfPR)
+	if err != nil {
+		return nil, err
+	}
+	gp, err := checkGP(&goodPoint)
+	if err != nil {
+		return nil, err
+	}
+	cp, err := checkCP(&concernPoint)
+	if err != nil {
+		return nil, err
+	}
+	return &Recruit{
+		ID:           id,
+		CompanyID:    companyID,
+		UserID:       userID,
+		SelfPR:       *pr,
+		GoodPoint:    *gp,
+		ConcernPoint: *cp,
+		UpdatedAt:    time.Now(),
+		CreatedAt:    time.Now(),
+	}, nil
 }
 
-func (rec *Recruit) ChangeSelfPR(text *string) error {
+func checkSelfPr(text *string) (*SelfPR, error) {
 	selfPr := SelfPR{Sentence: text}
 	if selfPr.validate() {
-		rec.SelfPR = selfPr
-		rec.UpdatedAt = time.Now()
-		return nil
+		return &selfPr, nil
 	}
-	return errors.New("self pr: invalid sentence")
+	return nil, errors.New("self pr: invalid sentence")
 }
-
-func (rec *Recruit) ChangeGoodPoint(text *string) error {
+func checkGP(text *string) (*GoodPoint, error) {
 	goodPoint := GoodPoint{Sentence: text}
 	if goodPoint.validate() {
-		rec.GoodPoint = goodPoint
-		rec.UpdatedAt = time.Now()
-		return nil
+		return &goodPoint, nil
 	}
-	return errors.New("good point: invalid sentence")
+	return nil, errors.New("good point: invalid sentence")
 }
-func (rec *Recruit) ChangeConcernPoint(text *string) error {
+func checkCP(text *string) (*ConcernPoint, error) {
 	concernPoint := ConcernPoint{Sentence: text}
 	if concernPoint.validate() {
-		rec.ConcernPoint = concernPoint
-		rec.UpdatedAt = time.Now()
-		return nil
+		return &concernPoint, nil
 	}
-	return errors.New("concern point: invalid sentence")
+	return nil, errors.New("concern point: invalid sentence")
+}
+func (rec *Recruit) ChangeSelfPR(text *string) error {
+	selfPr, err := checkSelfPr(text)
+	if err != nil {
+		return err
+	}
+	rec.SelfPR = *selfPr
+	rec.UpdatedAt = time.Now()
+	return nil
+}
+func (rec *Recruit) ChangeGoodPoint(text *string) error {
+	goodPoint, err := checkGP(text)
+	if err != nil {
+		return err
+	}
+	rec.GoodPoint = *goodPoint
+	rec.UpdatedAt = time.Now()
+	return nil
+}
+func (rec *Recruit) ChangeConcernPoint(text *string) error {
+	ConcernPoint, err := checkCP(text)
+	if err != nil {
+		return err
+	}
+	rec.ConcernPoint = *ConcernPoint
+	rec.UpdatedAt = time.Now()
+	return nil
 }

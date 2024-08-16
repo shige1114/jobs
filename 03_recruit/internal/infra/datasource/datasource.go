@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Open() *gorm.DB {
+func Open() (*gorm.DB, error) {
 	user := os.Getenv("POSTGRES_USER")
 	if user == "" {
 		user = "postgres"
@@ -37,7 +37,7 @@ func Open() *gorm.DB {
 
 	if err != nil {
 		fmt.Println(err)
-		return nil
+		return nil, err
 	}
-	return db
+	return db, nil
 }
