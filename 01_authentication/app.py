@@ -35,6 +35,7 @@ def singUp():
     ユーザのサインアップを行う処理
     """
     try:
+        print(request.form)
         UserApi.create(**request.form)
     except IntegrityError as e:
         return "invalid email",404
@@ -52,6 +53,26 @@ def singUp():
 @app.route("/authentication",methods=["DELETE"])
 def signOut():
     return
+
+@app.route("/user_id", methods=["GET"])
+def get_user():
+    """
+    ユーザが存在するか確認する処理
+    """
+    user_id = request.args.get("userId", '')
+    if not user_id:
+        return "User ID is required", 400
+
+    try:
+        user = UserApi.get_by_id(user_id)
+    except Exception as e:
+        print(e)
+        return "Internal Server Error", 500
+    
+    if user:
+        return jsonify({"message": "User exists"}), 200
+    else:
+        return jsonify({"message": "User not found"}), 404
 
 @app.route("/authentication",methods=["PUT"])
 def changeInfo():

@@ -42,4 +42,3 @@ volumes:
 networks:
   jobs-net:
     external: true
-  api-net:

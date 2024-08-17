@@ -12,6 +12,15 @@ class Company(Base):
     url = Column(String,nullable=True)
     active = Column(Boolean,default=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "kana": self.kana,
+            "url" : self.url,
+            "active": self.active
+        }
+
 class CompanyRepository():
     
     def create(name,kana,url):
@@ -40,6 +49,11 @@ class CompanyRepository():
             company = s.query(Company).filter(or_(Company.name.like(pattern),Company.kana.like(kana_pattern))).all()
             return company
             
+    def get_by_id(id: int) -> Company:
+        with Session() as s:
+            # IDでフィルタリングし、結果を1件取得する
+            company = s.query(Company).filter(Company.id == id).one_or_none()
+            return company
     def put(id):
 
 

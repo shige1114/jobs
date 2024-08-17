@@ -42,6 +42,11 @@ class UserApi():
             if user and verify_password(user.password,password):
                 return user
             return None
+    
+    def get_by_id(userId) -> User:
+        with Session() as s:
+            user = s.query(User).filter_by(id=userId).one_or_none()
+            return user
             
     def put(id):
 
