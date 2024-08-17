@@ -10,6 +10,7 @@ import (
 type CreateRecruit struct {
 	CompanyID    string `json:"CompanyID"`
 	UserID       string `json:"UserID"`
+	Name         string `json:"Name"`
 	GoodPoint    string `json:"GoodPoint"`
 	SelfPR       string `json:"SelfPR"`
 	ConcernPoint string `json:"ConcernPoint"`

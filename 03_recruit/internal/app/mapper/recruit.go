@@ -14,6 +14,7 @@ func NweRecruitResult(recruit *value.Recruit) *common.RecruitResult {
 	return &common.RecruitResult{
 		ID:           recruit.ID,
 		UserID:       recruit.UserID,
+		Name:         recruit.Name,
 		CompanyID:    recruit.CompanyID,
 		GoodPoint:    *recruit.GoodPoint.Sentence,
 		ConcernPoint: *recruit.ConcernPoint.Sentence,

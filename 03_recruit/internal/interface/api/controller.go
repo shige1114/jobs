@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/shige1114/03_recruit/internal/app/interfaces"
+	"github.com/shige1114/03_recruit/internal/infra/message"
 	"github.com/shige1114/03_recruit/internal/interface/api/dto/mapper"
 	"github.com/shige1114/03_recruit/internal/interface/api/dto/request"
 )
@@ -40,6 +41,15 @@ func (c *Controller) CreateController(g *gin.Context) {
 		return
 	}
 	// fmt.Printf("Converted RecruitCommand: %+v\n", recruitCommand)
+	steps := []message.SagaStep{
+		&message.Step1{UserID: createRecruit.UserID},
+		&message.Step2{CompnayId: createRecruit.CompanyID},
+	}
+
+	if err := message.RunSaga(steps); err != nil {
+		g.JSON(http.StatusBadRequest, map[string]string{"error": "Failed to saga"})
+		return
+	}
 
 	// fmt.Println(">>>")
 	if err := c.service.Create(recruitCommand); err != nil {

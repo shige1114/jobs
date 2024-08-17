@@ -10,6 +10,7 @@ type Response struct {
 	ID           uuid.UUID
 	CompanyID    uuid.UUID
 	UserID       uuid.UUID
+	Name         string
 	SelfPR       string
 	GoodPoint    string
 	ConcernPoint string

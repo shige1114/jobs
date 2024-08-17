@@ -10,6 +10,7 @@ func ToResponse(recruit *common.RecruitResult) *response.Response {
 		ID:           recruit.ID,
 		UserID:       recruit.UserID,
 		CompanyID:    recruit.CompanyID,
+		Name:         recruit.Name,
 		GoodPoint:    recruit.GoodPoint,
 		ConcernPoint: recruit.ConcernPoint,
 		SelfPR:       recruit.SelfPR,

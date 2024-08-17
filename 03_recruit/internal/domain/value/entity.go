@@ -11,6 +11,7 @@ type Recruit struct {
 	ID           uuid.UUID
 	CompanyID    uuid.UUID
 	UserID       uuid.UUID
+	Name         string
 	SelfPR       SelfPR
 	GoodPoint    GoodPoint
 	ConcernPoint ConcernPoint
@@ -18,7 +19,7 @@ type Recruit struct {
 	CreatedAt    time.Time
 }
 
-func New(companyID uuid.UUID, userID uuid.UUID, selfPR string, goodPoint string, concernPoint string) (*Recruit, error) {
+func New(companyID uuid.UUID, userID uuid.UUID, name string, selfPR string, goodPoint string, concernPoint string) (*Recruit, error) {
 	id, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err

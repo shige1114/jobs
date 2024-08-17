@@ -27,7 +27,7 @@ func main() {
 
 	api.NewRecruitController(g, recruitService)
 
-	if err := g.Run(); err != nil {
+	if err := g.Run(":1020"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

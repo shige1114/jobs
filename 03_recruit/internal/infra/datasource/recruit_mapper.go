@@ -9,6 +9,7 @@ func ToDB(rec *value.Recruit) *Recruit {
 		UserID:       rec.UserID,
 		CompanyID:    rec.CompanyID,
 		ID:           rec.ID,
+		Name:         rec.Name,
 		SelfPR:       rec.SelfPR.ToDB(),
 		GoodPoint:    rec.GoodPoint.ToDB(),
 		ConcernPoint: rec.ConcernPoint.ToDB(),

@@ -26,6 +26,7 @@ func (rec RecruitService) Create(recruitCommand *command.CreateCommand) error {
 	recruit, err := value.New(
 		recruitCommand.CompanyID,
 		recruitCommand.UserID,
+		recruitCommand.Name,
 		recruitCommand.SelfPR,
 		recruitCommand.GoodPoint,
 		recruitCommand.ConcernPoint,
