@@ -16,10 +16,12 @@ services:
     ports:
       - 1000:1000
     networks:
-      - jobs-net
-      - api-net
+      jobs-net:
+        ipv4_address: 172.22.0.3
+      api-net:
     depends_on:
      - db
+      
   db:
     image: postgres
     restart: always

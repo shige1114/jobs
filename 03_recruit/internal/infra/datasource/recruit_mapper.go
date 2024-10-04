@@ -18,14 +18,15 @@ func ToDB(rec *value.Recruit) *Recruit {
 	}
 }
 
-func FromDB(rec *Recruit) value.Recruit {
-	return value.Recruit{
+func FromDB(rec *Recruit) *value.Recruit {
+	return &value.Recruit{
 		UserID:       rec.UserID,
 		CompanyID:    rec.CompanyID,
 		ID:           rec.ID,
-		SelfPR:       value.SelfPR{Sentence: &rec.SelfPR},
-		GoodPoint:    value.GoodPoint{Sentence: &rec.GoodPoint},
-		ConcernPoint: value.ConcernPoint{Sentence: &rec.ConcernPoint},
+		Name:         rec.Name,
+		SelfPR:       value.SelfPR{Sentence: rec.SelfPR},
+		GoodPoint:    value.GoodPoint{Sentence: rec.GoodPoint},
+		ConcernPoint: value.ConcernPoint{Sentence: rec.ConcernPoint},
 		UpdatedAt:    rec.UpdatedAt,
 		CreatedAt:    rec.CreatedAt,
 	}

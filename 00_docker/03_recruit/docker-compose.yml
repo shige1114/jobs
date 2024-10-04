@@ -17,8 +17,9 @@ services:
     ports:
       - 1020:1020
     networks:
-      - jobs-net
-      - api-net
+      jobs-net:
+        ipv4_address: 172.22.0.5
+      api-net:
     depends_on:
      - db
   db:
@@ -42,3 +43,4 @@ volumes:
 networks:
   jobs-net:
     external: true
+  api-net:

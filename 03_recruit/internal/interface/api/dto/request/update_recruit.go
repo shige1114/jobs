@@ -12,7 +12,7 @@ type UpdateRequest struct {
 	ConcernPoint string `json:"ConcernPoint"`
 }
 
-func (req *UpdateRequest) ToUpdateSellerCommand() (*command.UpdateCommand, error) {
+func (req *UpdateRequest) ToUpdateRecruitCommand() (*command.UpdateCommand, error) {
 	id, err := uuid.Parse(req.ID)
 	if err != nil {
 		return nil, err

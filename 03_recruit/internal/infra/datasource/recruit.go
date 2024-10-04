@@ -8,8 +8,8 @@ import (
 
 type Recruit struct {
 	ID           uuid.UUID `gorm:"primaryKey;not null;"`
-	CompanyID    uuid.UUID `gorm:"not null;"`
-	UserID       uuid.UUID `gorm:"not null;"`
+	CompanyID    uuid.UUID `gorm:"not null;uniqueIndex:idx_company_user;"`
+	UserID       uuid.UUID `gorm:"not null;uniqueIndex:idx_company_user;"`
 	Name         string    `grom:"not null;"`
 	SelfPR       string
 	GoodPoint    string

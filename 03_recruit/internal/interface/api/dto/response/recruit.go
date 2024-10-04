@@ -7,15 +7,15 @@ import (
 )
 
 type Response struct {
-	ID           uuid.UUID
-	CompanyID    uuid.UUID
-	UserID       uuid.UUID
-	Name         string
-	SelfPR       string
-	GoodPoint    string
-	ConcernPoint string
-	UpdatedAt    time.Time
-	CreatedAt    time.Time
+	ID           uuid.UUID `json:"Id"`
+	CompanyID    uuid.UUID `json:"CompanyID"`
+	UserID       uuid.UUID `json:"UserID"`
+	Name         string    `json:"Name"`
+	SelfPR       string    `json:"SelfPR"`
+	GoodPoint    string    `json:"GoodPoint"`
+	ConcernPoint string    `json:"ConcernPoint"`
+	UpdatedAt    time.Time `json:"UpdatedAt"`
+	CreatedAt    time.Time `json:"CreatedAt"`
 }
 
 type ResponseList struct {

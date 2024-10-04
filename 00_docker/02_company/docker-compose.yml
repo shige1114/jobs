@@ -16,8 +16,9 @@ services:
     ports:
       - 1010:1010
     networks:
-      - jobs-net
-      - api-net
+      jobs-net:
+        ipv4_address: 172.22.0.4
+      api-net:
     depends_on:
      - db
   db:
@@ -29,6 +30,9 @@ services:
       POSTGRES_DB: flask_ddb
     volumes:
      - pgdata:/var/lib/postgresql/data
+     - type: bind
+       source: ../../02_company
+       target: /jobs/
     networks:
       - api-net
     ports:

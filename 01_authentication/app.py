@@ -1,33 +1,50 @@
 from flask import Flask,request,make_response,jsonify
 from sqlalchemy.exc import DataError,ProgrammingError,IntegrityError
 from db.user import UserApi
-from authenticator import get_access_token
-
+from authenticator import get_access_token,verify_jwt
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.backends import default_backend
 app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
-@app.route("/authentication",methods=["GET"])
+@app.route("/login", methods=["POST"])
 def signIn():
     """
     ユーザのサインインを行う処理
     """
-    
-    email = request.args.get("email",'')        
+    email = request.json.get("email", '')        
     print(email)
-    password = request.args.get("password","")
+    password = request.json.get("password", "")
     print(password)
-    try:
-        user = UserApi.get(email=email,password=password)
-        if user == None:
-            return "bad password ",404 
-    except Exception as e:
-        print(e)
-        return "bad email or password",404
     
-    return jsonify({"jwt":get_access_token(user.id)}),200
+    try:
+        # ユーザーを取得
+        user = UserApi.get(email=email, password=password)
+        if user is None:
+            return jsonify({"error": "Invalid email or password"}), 404
+        
+        # 秘密鍵を読み込む
+        with open("./private_key.pem", "rb") as key_file:
+            private_key = serialization.load_pem_private_key(
+                key_file.read(),
+                password=None,
+                backend=default_backend()
+            )
+        
+        # JWTを作成
+        jwt_token = get_access_token(user.id, private_key)
+
+        # JWTを返す
+        return jsonify({"jwt": jwt_token}), 200
+    
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return jsonify({"error": "An error occurred during login"}), 500
+
 
 @app.route("/authentication",methods=["POST"])
 def singUp():
@@ -73,6 +90,25 @@ def get_user():
         return jsonify({"message": "User exists"}), 200
     else:
         return jsonify({"message": "User not found"}), 404
+
+@app.route("/verify_token", methods=["POST"])
+def verify_token():
+    token = request.json.get("token")
+    if not token:
+        return jsonify({"error": "Token is missing"}), 400
+
+    try:
+        with open("./public_key.pem", "rb") as key_file:
+            public_key = serialization.load_pem_public_key(
+                key_file.read(),
+                backend=default_backend()
+            )
+        payload = verify_jwt(token, public_key)
+        return jsonify({"user_id":payload}), 200
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return jsonify({"error": "Invalid token"}), 400
+    
 
 @app.route("/authentication",methods=["PUT"])
 def changeInfo():

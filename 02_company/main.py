@@ -2,8 +2,10 @@ from repository.init_db import reset_db,init_db
 from flask import Flask,request,make_response,jsonify
 from sqlalchemy.exc import DataError,ProgrammingError,IntegrityError
 from repository.company import CompanyRepository
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app,origins=["http://localhost:3000"])
 
 @app.route("/")
 def hello_world():

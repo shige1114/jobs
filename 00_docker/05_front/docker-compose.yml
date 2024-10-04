@@ -1,0 +1,17 @@
+
+services:
+  front:
+    build: .
+    volumes:
+      - type: bind
+        source: ../../
+        target: /jobs/
+    working_dir: /jobs/05_front
+    tty: true
+    ports:
+      - 1040:1040
+    networks:
+      - jobs-net
+networks:
+  jobs-net:
+    external: true

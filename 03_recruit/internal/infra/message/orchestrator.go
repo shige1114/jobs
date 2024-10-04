@@ -9,7 +9,7 @@ import (
 
 // サーガの実施状況の監視と役割の割り振り
 // ユーザと会社のTopicにメッセージの送信
-const STEP1_URL = "http://172.22.0.2:1000/user_id"
+const STEP1_URL = "http://172.22.0.3:1000/user_id"
 const STEP2_URL = "http://172.22.0.4:1010/company_id"
 
 type SagaStep interface {

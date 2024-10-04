@@ -31,6 +31,7 @@ func ToCreateCommand(req *CreateRecruit) (*command.CreateCommand, error) {
 	return &command.CreateCommand{
 		CompanyID:    companyId,
 		UserID:       userId,
+		Name:         req.Name,
 		SelfPR:       req.SelfPR,
 		GoodPoint:    req.GoodPoint,
 		ConcernPoint: req.ConcernPoint,

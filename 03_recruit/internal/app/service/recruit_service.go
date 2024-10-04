@@ -45,21 +45,45 @@ func (rec RecruitService) Create(recruitCommand *command.CreateCommand) error {
 
 func (rec RecruitService) FindByUserId(userId uuid.UUID) (*query.RecruitQueryResultList, error) {
 	recruits, err := rec.repository.GetByUserId(userId)
-
 	if err != nil {
 		return nil, err
 	}
 
 	var queryRecruitList query.RecruitQueryResultList
 
-	for _, recruit := range *recruits {
-		queryRecruitList.Result = append(queryRecruitList.Result, mapper.NweRecruitResult(&recruit))
+	for _, recruit := range recruits {
+		queryRecruitList.Result = append(queryRecruitList.Result, mapper.NweRecruitResult(recruit))
 	}
 	return &queryRecruitList, nil
 }
 
 func (rec RecruitService) Update(recruitCommand *command.UpdateCommand) (*query.RecruitQueryResult, error) {
-	return nil, nil
+	recruit, err := rec.repository.GetById(recruitCommand.ID)
+	if err != nil {
+		return nil, err
+	}
+	if recruit == nil {
+		return nil, errors.New("recruit not found")
+	}
+	if err := recruit.ChangeConcernPoint(recruitCommand.ConcernPoint); err != nil {
+		return nil, err
+	}
+	if err := recruit.ChangeSelfPR(recruitCommand.SelfPR); err != nil {
+		return nil, err
+	}
+	if err := recruit.ChangeGoodPoint(recruitCommand.GoodPoint); err != nil {
+		return nil, err
+	}
+
+	if err := rec.repository.Put(recruit); err != nil {
+		return nil, err
+	}
+
+	result := query.RecruitQueryResult{
+		Result: mapper.NweRecruitResult(recruit),
+	}
+
+	return &result, nil
 }
 
 func (rec RecruitService) Delete(id uuid.UUID) error {
